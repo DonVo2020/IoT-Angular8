@@ -1,0 +1,50 @@
+<div class="grid-container margin-left">
+  <mat-grid-list cols="2">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            Temperature Notifications <span *ngIf="notificationsData"> - Max: {{notificationsData.temperatureMax}}&#8451; / Min: {{notificationsData.temperatureMin}}&#8451;</span>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+            <div class="notifications-container" *ngIf="(tempMaxClassrooms.length != 0 || tempMinClassrooms.length != 0); else loggedOut">
+              <div *ngIf="tempMaxClassrooms.length != 0">
+                <div class="notification-item ripple" *ngFor="let classroom of tempMaxClassrooms;let i = index" [attr.data-index]="i" (click)="viewClassroom(classroom)">
+                  <hr *ngIf="i != 0">
+                  <span class="font-weight-bold">Classroom #{{classroom.id}}</span> has <span class="text-danger font-weight-bold">{{classroom.temperature}}&#8451;</span>
+                </div>
+              </div>
+              <div *ngIf="tempMinClassrooms.length != 0">
+                <div class="notification-item ripple" *ngFor="let classroom of tempMinClassrooms;let i = index" [attr.data-index]="i" (click)="viewClassroom(classroom)">
+                  <hr *ngIf="tempMaxClassrooms.length == 0 && i != 0">
+                  <span class="font-weight-bold">Classroom #{{classroom.id}}</span> has <span class="text-primary font-weight-bold">{{classroom.temperature}}&#8451;</span>
+                </div>
+              </div>
+            </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-card class="dashboard-card">
+          <mat-card-header>
+            <mat-card-title>
+              Energy Notifications <span *ngIf="notificationsData"> - Max: {{notificationsData.energyMax}} watt</span>
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="dashboard-card-content">
+            <div class="notifications-container" *ngIf="energyMaxClassrooms.length != 0; else loggedOut">
+              <div class="notification-item ripple" *ngFor="let classroom of energyMaxClassrooms;let i = index" [attr.data-index]="i" (click)="viewClassroom(classroom)">
+                <hr *ngIf="i != 0">
+                <span class="font-weight-bold">Classroom #{{classroom.id}}</span> has <span class="text-danger font-weight-bold">{{classroom.watt}} watt</span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+    </mat-grid-tile>
+
+    <ng-template #noNotifications>
+      <div class="notifications-container" >No notifications.</div>
+    </ng-template>
+  </mat-grid-list>
+</div>
